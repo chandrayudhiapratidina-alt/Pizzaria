@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Design Document (SDD) - Pizzaria Lengkap</title>
+    <!-- Load Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Load Mermaid.js for Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: false, theme: 'default' });
+        
+        document.addEventListener("DOMContentLoaded", async () => {
+            const markdownContent = document.getElementById('markdown-content').textContent;
+            
+            // Parse Markdown to HTML
+            document.getElementById('content').innerHTML = marked.parse(markdownContent);
+            
+            // Render Mermaid Diagrams
+            const mermaidBlocks = document.querySelectorAll('code.language-mermaid');
+            mermaidBlocks.forEach((block, index) => {
+                const pre = block.parentElement;
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.textContent;
+                pre.parentNode.replaceChild(div, pre);
+            });
+            await mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+        });
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1, h2, h3 { color: #111; margin-top: 2rem; }
+        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #dfe2e5;
+            padding: 10px 12px;
+            vertical-align: top;
+        }
+        th { background-color: #f6f8fa; font-weight: 600; text-align: left; width: 35%; }
+        tr:nth-child(even) { background-color: #fdfdfd; }
+        blockquote {
+            padding: 1rem; margin: 1rem 0; color: #24292e; background-color: #f1f8ff;
+            border-left: 0.25em solid #0366d6; border-radius: 3px;
+        }
+        code {
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: #eff1f3;
+            border-radius: 3px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        .mermaid { text-align: center; margin: 2rem 0; background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid #eee; }
+        
+        /* Print optimizations for PDF */
+        @media print {
+            body { padding: 0; max-width: 100%; }
+            table { font-size: 12px; page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            .mermaid { border: none; padding: 0; margin: 1rem 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="content">Loading document...</div>
+    
+    <script type="text/markdown" id="markdown-content">
+# SYSTEM DESIGN DOCUMENT (SDD)
+**Pizzaria - Integrated Restaurant Management & E-Commerce System**
+
+| Keterangan | Detail |
+|---|---|
+| **Nama Proyek** | Pizzaria |
+| **Versi Dokumen** | 1.1.0 (Lengkap) |
+| **Tanggal Pembaruan** | 27 Juni 2026 |
+| **Penyusun** | Tim Pengembang Pizzaria |
+| **Stack Teknologi Utama** | Laravel 12, PHP 8.2, MySQL, Bootstrap/Tailwind |
+
+---
+
+## 1. PENDAHULUAN
+
+### 1.1 Tujuan Sistem
+Pizzaria adalah sebuah platform *omnichannel* terpadu yang dirancang untuk mengatasi kompleksitas manajemen restoran modern. Sistem ini menggabungkan operasional internal (Point of Sales/Kasir, Manajemen Inventaris) dengan layanan pelanggan publik (Platform E-Commerce, Pemesanan Online). Tujuan utamanya adalah mendigitalisasi pemesanan, otomatisasi *fulfillment* (pengiriman), serta memberikan laporan analitik akurat berbasis data *real-time*.
+
+### 1.2 Cakupan (Scope)
+Ruang lingkup sistem Pizzaria meliputi:
+1. **Sistem Pemesanan Eksternal (E-Commerce):** Memungkinkan pelanggan (Client) mendaftar, melihat katalog, mengklaim promo, dan melakukan pemesanan (delivery/pickup).
+2. **Sistem Pemesanan Internal (POS):** Antarmuka kasir untuk pesanan *Dine-in*, manajemen meja, dan pembayaran manual (Cash/QRIS statis).
+3. **Manajemen Dapur & Inventaris:** Pemotongan stok bahan baku otomatis berdasarkan resep ketika pesanan diproses.
+4. **Logistik Otomatis:** Pemanggilan kurir otomatis, pelacakan (*tracking*), dan pembuatan resi (Waybill) via API Biteship.
+5. **Gateway Pembayaran:** Validasi pembayaran online tanpa campur tangan manusia via API Midtrans.
+6. **Analitik & Pelaporan:** Laporan penjualan, performa menu, dan visibilitas tren bagi Admin.
+
+---
+
+## 2. ARSITEKTUR SISTEM
+
+### 2.1 Diagram Arsitektur Tingkat Tinggi (High-Level Architecture)
+Sistem diimplementasikan menggunakan arsitektur **Client-Server** dengan pola **MVC (Model-View-Controller)** pada lapisan *backend*.
+
+```mermaid
+graph TD
+    Client[Client / Browser / Mobile Web] -->|HTTP/HTTPS| WebServer[Web Server Nginx/Apache]
+    WebServer --> Laravel[Aplikasi Laravel 12]
+    
+    subgraph "Server Internal Pizzaria"
+        Laravel --> Controllers[Controllers]
+        Controllers --> Models[Models (ORM)]
+        Models --> DB[(MySQL Database)]
+        Controllers --> Views[Views (Blade / HTML)]
+    end
+    
+    Laravel <-->|REST API JSON| Midtrans[Midtrans Payment Gateway]
+    Laravel <-->|REST API JSON| Biteship[Biteship Logistics]
+    
+    Midtrans -.->|Webhook POST| Laravel
+    Biteship -.->|Webhook POST| Laravel
+```
+
+### 2.2 Deskripsi Komponen
+- **Client (Frontend):** *Render* di sisi *server* menggunakan mesin Blade *template*. Dioptimalkan untuk responsivitas layar (Mobile-first).
+- **Aplikasi (Backend):** Laravel bertugas memproses *routing*, otentikasi (menggunakan *Session*), logika validasi (*Form Requests*), serta pengiriman notifikasi/email.
+- **Database:** Relasional MySQL menyimpan kondisi *state* sistem yang dimanipulasi melalui *Eloquent ORM*.
+- **Webhooks:** *Endpoint* khusus tanpa pelindung CSRF (namun menggunakan validasi *Signature Key*) untuk menerima sinyal otomatis dari pihak ketiga (contoh: status pembayaran berhasil dari Midtrans).
+
+---
+
+## 3. STRUKTUR DATABASE (ENTITY RELATIONSHIP)
+
+### 3.1 Diagram Relasi Entitas (ERD)
+
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ CUSTOMER_ADDRESSES : has
+    USERS ||--o{ STORE_REVIEWS : writes
+    CATEGORIES ||--|{ MENUS : contains
+    MENUS ||--o{ MENU_IMAGES : has
+    MENUS ||--o{ PRODUCT_REVIEWS : receives
+    INGREDIENTS ||--o{ CUSTOMIZATIONS : provides
+    MENUS ||--o{ CUSTOMIZATIONS : allows
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    ORDER_ITEMS }|--o| CUSTOMIZATIONS : optionally_includes
+    ORDERS ||--o| PAYMENTS : requires
+    ORDERS ||--o| DELIVERIES : requires
+    PROMOTIONS ||--o{ PROMOTION_REDEMPTIONS : tracked_in
+    USERS ||--o{ PROMOTION_REDEMPTIONS : claims
+```
+
+### 3.2 Detail Tabel & Kolom Utama
+
+1. **`users` (Otentikasi & Otorisasi)**
+   - `id`, `name`, `email`, `password`.
+   - `role`: (`admin`, `cashier`, `client`).
+   - `phone`: Nomor kontak opsional untuk pengiriman.
+
+2. **Katalog Produk & Inventaris**
+   - **`categories`**: `id`, `name`, `slug`, `sort_order`.
+   - **`menus`**: `id`, `category_id`, `name`, `description`, `base_price`, `is_available`.
+   - **`ingredients`**: `id`, `name`, `stock_quantity`, `unit` (gram, pcs), `minimum_stock_alert`.
+   - **`customizations`**: Menghubungkan *Menu* dengan bahan baku (*Ingredient*). Kolom: `menu_id`, `ingredient_id`, `name`, `additional_price`, `ingredient_qty_required`.
+
+3. **Manajemen Pesanan (Order Management)**
+   - **`orders`**: Induk transaksi. Kolom: `id`, `user_id`, `order_number`, `status` (*pending, paid, processing, ready, completed, cancelled*), `order_type` (*dine_in, delivery*), `subtotal`, `tax`, `total_amount`.
+   - **`order_items`**: Detail keranjang belanja. Kolom: `order_id`, `menu_id`, `quantity`, `price`, `customization_id` (opsional).
+   - **`tables`**: `id`, `table_number`, `status`, `qr_code`.
+
+4. **Eksternal / Pemrosesan Lanjutan**
+   - **`payments`**: `id`, `order_id`, `payment_method` (*cash, qris, midtrans*), `payment_status`, `transaction_id`, `paid_at`.
+   - **`deliveries`**: `id`, `order_id`, `courier_name`, `courier_service`, `tracking_id`, `waybill_id`, `shipping_cost`, `status`.
+
+---
+
+## 4. ALUR KERJA LOGIKA BISNIS (STATE MACHINE)
+
+### 4.1 Siklus Hidup Pesanan (Order Lifecycle)
+
+Setiap pesanan di Pizzaria dikendalikan melalui sistem perubahan status (*State Machine*) untuk memastikan tidak ada alur yang terlewat (misal: stok bahan baku tidak mungkin dipotong 2 kali).
+
+```mermaid
+stateDiagram-v2
+    [*] --> pending : Customer Checkout (Midtrans) / Kasir (POS)
+    pending --> paid : Pembayaran Diverifikasi
+    pending --> cancelled : Customer Batalkan / Expired
+    
+    paid --> processing : Admin/Kasir Proses Pesanan (STOK TERPOTONG)
+    
+    processing --> ready : Makanan Selesai Dimasak
+    
+    state ready_fork <<fork>>
+    ready --> ready_fork
+    
+    ready_fork --> in_transit : Jika tipe = Delivery (Biteship Request Pickup)
+    ready_fork --> completed : Jika tipe = Dine-in (Makanan Disajikan)
+    
+    in_transit --> completed : Webhook Biteship Status Delivered
+    
+    completed --> [*]
+```
+
+### 4.2 Logika Pemotongan Stok (Inventory Management)
+Algoritma pemotongan stok beroperasi pada *Event* saat order berubah dari `paid` menjadi `processing`.
+```text
+UNTUK SETIAP item DALAM pesanan:
+  1. Kurangi stok bahan baku utama (Base Recipe) dari menu tersebut sebesar N kuantitas.
+  2. JIKA item memiliki 'customization' (misal: Tambahan Keju):
+       Kurangi tabel 'ingredients' untuk 'Keju' sebesar Q kuantitas tambahan.
+  3. CEK tabel 'ingredients':
+       JIKA sisa_stok < minimum_stock_alert:
+           Kirim Notifikasi Peringatan ke Dashboard Admin.
+```
+
+---
+
+## 5. INTEGRASI API EKSTERNAL
+
+### 5.1 Pembayaran Midtrans (Payment Gateway)
+- **Pembuatan Tagihan (Charge):** Menggunakan fitur Snap API (Pop-up/Redirect). Sistem mengirim *Payload* berisi total harga, detail item, dan data *customer* ke Midtrans.
+- **Webhook Notifikasi:** Midtrans akan memukul endpoint POST `/webhook/midtrans` secara *asynchronous* ketika pembayaran sukses/gagal.
+- **Keamanan:** Memvalidasi kombinasi `order_id`, `status_code`, dan `gross_amount` beserta enkripsi SHA512 (Signature Key).
+
+### 5.2 Logistik Biteship (Delivery Fulfillment)
+- **Cek Ongkos Kirim:** GET API ke `/v1/rates/couriers` menggunakan titik asal Pizzaria dan koordinat alamat pelanggan.
+- **Memanggil Kurir (Create Order):** Saat status menjadi `ready`, sistem mem-POST data ke `/v1/orders` Biteship. Kembaliannya adalah `tracking_id` dan `waybill_id`.
+- **Cetak Resi:** Sistem Pizzaria merender label resi yang menanamkan *barcode* dari API Biteship, siap ditempel ke kotak pizza.
+- **Webhook Status:** Biteship akan mengirim *update* status (*allocated, picked_up, delivered*) ke *endpoint* POST `/webhook/biteship`.
+
+---
+
+## 6. MANAJEMEN UI/UX (USER INTERFACE)
+
+Desain antarmuka Pizzaria memisahkan secara ketat *routing* dan pengalaman pengguna berdasarkan peran:
+
+1. **`/admin/*` (Dashboard Manajerial):**
+   - Tema warna tegas, fokus pada visualisasi data (Grafik Chart.js).
+   - Penggunaan *DataTables* untuk manajemen Staf, Menu, dan Inventaris yang *heavy-data*.
+2. **`/cashier/*` (Point of Sales):**
+   - Antarmuka satu layar (*Single-page application feel*) yang responsif.
+   - Tombol-tombol besar berorientasi layar sentuh (tablet/iPad-friendly) untuk input pesanan cepat.
+3. **`/client/*` (Customer E-Commerce):**
+   - Desain interaktif, ramah pengguna, berorientasi konversi.
+   - Mengadopsi tata letak keranjang melayang (*floating cart*) untuk navigasi yang lancar.
+
+---
+
+## 7. KEBUTUHAN NON-FUNGSIONAL (NFR)
+
+1. **Performa & Skalabilitas:**
+   - Waktu buka halaman *E-Commerce* rata-rata di bawah 2 detik.
+   - Pemanfaatan *Eager Loading* di Laravel untuk mencegah masalah kueri *N+1* pada katalog menu.
+2. **Keamanan Data:**
+   - Seluruh sandi di-hash menggunakan *Bcrypt*.
+   - Implementasi perlindungan CSRF (*Cross-Site Request Forgery*) pada seluruh formulir mutasi data.
+3. **Ketersediaan (Availability):**
+   - Sistem didesain untuk ditempatkan pada infrastruktur *cloud* bergaransi *uptime* 99.9%.
+
+---
+*Dokumen ini merupakan spesifikasi rancang bangun resmi dari arsitektur perangkat lunak Pizzaria.*
+    </script>
+</body>
+</html>

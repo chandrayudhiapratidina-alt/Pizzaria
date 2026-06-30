@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>pizzaria_testing_document_revised.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="dokumen-pengujian-sistem-pizzaria">DOKUMEN PENGUJIAN SISTEM PIZZARIA</h1>
+<p><strong>Integrated Restaurant Management &amp; E-Commerce System</strong></p>
+<table>
+<thead>
+<tr>
+<th>Keterangan</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Versi Sistem</strong></td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td><strong>Framework</strong></td>
+<td>Laravel 12 / PHP 8.2</td>
+</tr>
+<tr>
+<td><strong>Lingkungan</strong></td>
+<td>Local Development (XAMPP) / Staging</td>
+</tr>
+<tr>
+<td><strong>Tipe Pengujian</strong></td>
+<td>Fungsional (UAT - User Acceptance Testing)</td>
+</tr>
+<tr>
+<td><strong>Tanggal Pengujian</strong></td>
+<td>27 Juni 2026</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="1-tujuan-pengujian">1. TUJUAN PENGUJIAN</h2>
+<p>Pengujian ini bertujuan memverifikasi seluruh fungsionalitas bisnis utama pada Pizzaria berjalan stabil, akurat, dan sesuai dengan arsitektur <strong>3 Peran Utama (RBAC)</strong>. Cakupan pengujian meliputi:</p>
+<ul>
+<li><strong>Autentikasi &amp; Otorisasi:</strong> Akses khusus Admin, Kasir, dan Customer.</li>
+<li><strong>Sistem Pemesanan:</strong> <em>Dine-in</em> (via POS Kasir) &amp; <em>Online</em> (via E-Commerce).</li>
+<li><strong>Fulfillment &amp; Logistik:</strong> Otomatisasi pengiriman menggunakan <strong>Biteship API</strong>.</li>
+<li><strong>Manajemen Restoran:</strong> Inventaris bahan baku, kustomisasi menu, dan promosi.</li>
+</ul>
+<hr>
+<h2 id="2-akun-pengujian-test-credentials">2. AKUN PENGUJIAN (TEST CREDENTIALS)</h2>
+<p>Sistem menggunakan <strong>3 role utama</strong> tanpa melibatkan Koki atau Driver internal.</p>
+<table>
+<thead>
+<tr>
+<th>Peran</th>
+<th>Email</th>
+<th>Password</th>
+<th>Dashboard Awal</th>
+<th>Hak Akses Utama</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Admin</strong></td>
+<td><code>admin@pizzaria.com</code></td>
+<td><code>password</code></td>
+<td><code>/admin/dashboard</code></td>
+<td>Akses penuh: staf, menu, bahan baku, analitik</td>
+</tr>
+<tr>
+<td><strong>Kasir</strong></td>
+<td><code>cashier@pizzaria.com</code></td>
+<td><code>password</code></td>
+<td><code>/cashier/dashboard</code></td>
+<td>POS, proses pesanan, panggil kurir Biteship</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td><code>client@pizzaria.com</code></td>
+<td><code>password</code></td>
+<td><code>/client/online/</code></td>
+<td>E-commerce, pelacakan pengiriman, ulasan</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PENTING:</strong> Jangan mengubah <em>password</em> akun <code>admin</code> selama masa pengujian untuk menghindari terkuncinya akses <em>reviewer</em> lain.</p>
+<hr>
+<h2 id="alur-kerja-pesanan--logistik-biteship">ALUR KERJA PESANAN &amp; LOGISTIK BITESHIP</h2>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    autonumber
+    actor C as Customer
+    participant S as Sistem Pizzaria
+    actor K as Admin / Kasir
+    participant B as Biteship API
+
+    C->>S: Checkout & Bayar Pesanan (Midtrans)
+    S-->>K: Notifikasi Pesanan Baru masuk ke Antrean
+    K->>S: Klik "Proses Pesanan" — Stok bahan baku terpotong
+    K->>S: Klik "Pesanan Siap" (Ready)
+    S->>B: POST /v1/orders — Request Pickup Kurir
+    B-->>S: Return order_id & tracking_id
+    K->>S: Cetak Waybill (Resi Barcode)
+    B->>S: Webhook — Courier Assigned / Picked Up
+    C->>S: Cek Live Tracking Timeline
+    B->>S: Webhook — Status: Delivered
+    S-->>C: Pesanan otomatis menjadi Completed
+</div></code></pre>
+<hr>
+<h2 id="3-skenario-pengujian">3. SKENARIO PENGUJIAN</h2>
+<hr>
+<h3 id="31--modul-autentikasi--otorisasi-rbac">3.1 — Modul Autentikasi &amp; Otorisasi (RBAC)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUTH-01</td>
+<td>Login Admin berhasil</td>
+<td>1. Buka <code>/login</code><br>2. Masukkan email &amp; password Admin<br>3. Klik Login</td>
+<td>Email: <code>admin@pizzaria.com</code><br>Password: <code>password</code></td>
+<td>Berhasil login, diarahkan ke <code>/admin/dashboard</code></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>AUTH-02</td>
+<td>Login Kasir berhasil</td>
+<td>1. Buka <code>/login</code><br>2. Masukkan email &amp; password Kasir<br>3. Klik Login</td>
+<td>Email: <code>cashier@pizzaria.com</code><br>Password: <code>password</code></td>
+<td>Berhasil login, diarahkan ke <code>/cashier/dashboard</code></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>AUTH-03</td>
+<td>Login gagal (password salah)</td>
+<td>1. Buka <code>/login</code><br>2. Masukkan email benar tapi password salah</td>
+<td>Email: <code>admin@pizzaria.com</code><br>Password: <code>salah123</code></td>
+<td>Login gagal, muncul pesan error validasi</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>AUTH-04</td>
+<td>Restriksi akses antar peran</td>
+<td>1. Login sebagai Kasir<br>2. Paksa buka URL <code>/admin/dashboard</code></td>
+<td>—</td>
+<td>Sistem menolak akses (Error 403 atau redirect)</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>AUTH-05</td>
+<td>Logout berhasil</td>
+<td>1. Login sebagai pengguna mana pun<br>2. Klik tombol Logout</td>
+<td>—</td>
+<td>Sesi dihapus, diarahkan ke halaman <code>/login</code></td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="32--modul-manajemen-staf-admin">3.2 — Modul Manajemen Staf (Admin)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STF-01</td>
+<td>Tambah akun staf baru</td>
+<td>1. Login Admin<br>2. Buka <code>/admin/staff/create</code><br>3. Isi form, klik simpan</td>
+<td>Nama, Email,<br>Password (min 8 char),<br>Role: <code>cashier</code></td>
+<td>Akun staf berhasil dibuat, muncul di daftar staf</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>STF-02</td>
+<td>Ubah data staf</td>
+<td>1. Buka daftar staf<br>2. Klik Edit pada akun staf<br>3. Ubah Nama</td>
+<td>Nama diubah menjadi &quot;Kasir Shift Malam&quot;</td>
+<td>Data staf berhasil diperbarui di database</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>STF-03</td>
+<td>Validasi email duplikat</td>
+<td>1. Buka form tambah staf<br>2. Masukkan email yang sudah terdaftar</td>
+<td>Email: <code>admin@pizzaria.com</code></td>
+<td>Gagal disimpan, muncul pesan error &quot;Email sudah digunakan&quot;</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>STF-04</td>
+<td>Admin tidak bisa hapus akunnya sendiri</td>
+<td>1. Login Admin<br>2. Klik tombol Hapus di baris akun Admin sendiri</td>
+<td>—</td>
+<td>Sistem menolak, muncul pesan error &quot;You cannot delete your own account!&quot;</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>STF-05</td>
+<td>Hapus akun staf lain</td>
+<td>1. Login Admin<br>2. Klik Hapus pada akun staf (bukan dirinya sendiri)</td>
+<td>—</td>
+<td>Akun staf berhasil dihapus dan hilang dari daftar</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="33--modul-katalog-menu--inventaris-admin">3.3 — Modul Katalog Menu &amp; Inventaris (Admin)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MNU-01</td>
+<td>Tambah menu baru dengan kategori</td>
+<td>1. Login Admin<br>2. Buka <code>/admin/menus/create</code><br>3. Isi data menu, pilih kategori</td>
+<td>Nama: &quot;Pizza Spesial&quot;<br>Harga: 65000<br>Kategori: <em>Pizza</em></td>
+<td>Menu berhasil ditambahkan dan tampil di katalog pelanggan</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>MNU-02</td>
+<td>Nonaktifkan ketersediaan menu</td>
+<td>1. Buka halaman edit menu<br>2. Ubah <code>is_available</code> menjadi <code>false</code></td>
+<td>—</td>
+<td>Menu tidak lagi tampil di halaman katalog pelanggan</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>MNU-03</td>
+<td>Tambah bahan baku baru</td>
+<td>1. Login Admin<br>2. Buka <code>/admin/ingredients/create</code><br>3. Isi data</td>
+<td>Nama: &quot;Mozarella&quot;<br>Stok: 5000<br>Satuan: <code>gram</code><br>Min Alert: 500</td>
+<td>Bahan baku berhasil tersimpan dengan stok awal yang benar</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>MNU-04</td>
+<td>Tambah opsi kustomisasi menu</td>
+<td>1. Buka form kustomisasi<br>2. Tambahkan opsi baru yang terhubung ke bahan baku</td>
+<td>Nama: &quot;Extra Cheese&quot;<br>Tambah Harga: 5000<br>Bahan Baku: Mozarella<br>Qty: 50gr</td>
+<td>Kustomisasi tersimpan dan tampil sebagai opsi pada detail menu</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="34--modul-kasir--pos-dine-in">3.4 — Modul Kasir &amp; POS (Dine-In)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POS-01</td>
+<td>Kasir membuat pesanan baru</td>
+<td>1. Login Kasir<br>2. Buka <code>/cashier/pos</code><br>3. Pilih meja &amp; tambah menu ke keranjang</td>
+<td>Pilih Meja 1,<br>tambah Pizza Margherita Qty 2</td>
+<td>Total harga di layar POS terhitung dengan benar</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>POS-02</td>
+<td>Terapkan kode promo di kasir</td>
+<td>1. Di halaman POS, masukkan kode promo<br>2. Klik Terapkan</td>
+<td>Kode promo: <code>DISKON10</code></td>
+<td>Harga total berkurang sesuai diskon promo yang berlaku</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>POS-03</td>
+<td>Checkout &amp; bayar tunai (Cash)</td>
+<td>1. Selesai input pesanan<br>2. Pilih metode bayar <code>Cash</code><br>3. Masukkan jumlah uang diterima</td>
+<td>Uang diterima: 100.000</td>
+<td>Status pesanan berubah jadi <code>Paid</code>, kasir melihat informasi kembalian yang benar</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>POS-04</td>
+<td>Checkout &amp; bayar QRIS</td>
+<td>1. Pilih metode bayar <code>QRIS</code><br>2. Masukkan referensi nomor transaksi</td>
+<td>Payment Reference diisi</td>
+<td>Status pesanan berubah jadi <code>Paid</code> dengan metode tercatat <code>QRIS</code></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>POS-05</td>
+<td>Lihat riwayat transaksi hari ini</td>
+<td>1. Login Kasir<br>2. Buka <code>/cashier/history</code></td>
+<td>—</td>
+<td>Daftar pesanan yang sudah <code>Paid</code> hari ini tampil beserta total pendapatan agregat</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>POS-06</td>
+<td>Cetak struk</td>
+<td>1. Di riwayat, klik tombol cetak struk pada salah satu pesanan</td>
+<td>—</td>
+<td>Halaman struk terbuka, berisi rincian pesanan dan nominal lengkap</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="35--modul-manajemen-antrean-pesanan-adminkasir">3.5 — Modul Manajemen Antrean Pesanan (Admin/Kasir)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ORD-01</td>
+<td>Pesanan baru masuk ke daftar antrean</td>
+<td>1. Selesaikan checkout (Paid)<br>2. Admin/Kasir buka <code>/admin/orders</code></td>
+<td>—</td>
+<td>Pesanan baru otomatis muncul di daftar antrean pesanan</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ORD-02</td>
+<td>Proses pesanan &amp; stok terpotong</td>
+<td>1. Klik &quot;Proses Pesanan&quot; pada baris pesanan</td>
+<td>—</td>
+<td>Status berubah menjadi <code>Processing</code>. Stok bahan baku berkurang otomatis sesuai resep</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ORD-03</td>
+<td>Verifikasi pengurangan stok kustomisasi</td>
+<td>1. Pesan menu dengan opsi &quot;Extra Cheese&quot;<br>2. Admin klik &quot;Proses Pesanan&quot;<br>3. Cek stok Mozarella</td>
+<td>—</td>
+<td>Stok Mozarella berkurang lebih banyak dari standar resep (sesuai qty kustomisasi)</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ORD-04</td>
+<td>Tandai pesanan &quot;Siap&quot;</td>
+<td>1. Klik tombol &quot;Pesanan Siap&quot; / &quot;Ready&quot; pada pesanan</td>
+<td>—</td>
+<td>Status pesanan berubah jadi <code>Ready</code>, pesanan masuk ke status pengiriman/pickup</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="36--modul-pemesanan-online-customer-e-commerce">3.6 — Modul Pemesanan Online (Customer E-Commerce)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ONL-01</td>
+<td>Pelanggan lihat katalog tanpa login</td>
+<td>1. Buka <code>/client/catalog</code> tanpa login</td>
+<td>—</td>
+<td>Halaman katalog menu tampil lengkap (mode tamu)</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-02</td>
+<td>Pelanggan register akun baru</td>
+<td>1. Buka <code>/register</code><br>2. Isi form pendaftaran</td>
+<td>Nama, Email baru,<br>Password</td>
+<td>Akun berhasil dibuat dengan role <code>client</code>, pelanggan langsung login</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-03</td>
+<td>Tambah kustomisasi ke keranjang</td>
+<td>1. Login sebagai pelanggan<br>2. Buka detail menu<br>3. Pilih opsi &quot;Extra Cheese&quot;<br>4. Tambah ke keranjang</td>
+<td>—</td>
+<td>Item tampil di keranjang dengan kustomisasi terpilih &amp; harga yang sudah menyertakan tambahan</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-04</td>
+<td>Klaim promo pengguna baru (Welcome Promo)</td>
+<td>1. Login akun baru (belum pernah order)<br>2. Buka <code>/client/online/welcome-promo/claim</code></td>
+<td>—</td>
+<td>Promo berhasil diklaim dan otomatis teraplikasi untuk pesanan berikutnya</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-05</td>
+<td>Kalkulasi ongkos kirim Biteship</td>
+<td>1. Masuk halaman checkout online<br>2. Pilih alamat pengiriman</td>
+<td>Alamat yang memiliki koordinat (lat/lng)</td>
+<td>Tarif ongkos kirim dari berbagai kurir muncul otomatis dari API Biteship</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-06</td>
+<td>Pembayaran via Midtrans (Sandbox)</td>
+<td>1. Klik Bayar di halaman checkout<br>2. Selesaikan pembayaran menggunakan metode simulasi Midtrans</td>
+<td>—</td>
+<td>Status pesanan berubah menjadi <code>Paid</code>, pelanggan diarahkan ke halaman konfirmasi</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-07</td>
+<td>Pelanggan batalkan pesanan (sebelum diproses)</td>
+<td>1. Di halaman detail pesanan, klik tombol Batalkan</td>
+<td>—</td>
+<td>Status pesanan berubah menjadi <code>Cancelled</code>, pesanan hilang dari antrean aktif</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ONL-08</td>
+<td>Pelanggan beri ulasan produk</td>
+<td>1. Setelah pesanan selesai (<code>completed</code>), buka halaman riwayat<br>2. Klik &quot;Beri Ulasan&quot;</td>
+<td>Rating bintang &amp; komentar</td>
+<td>Ulasan tersimpan, menunggu persetujuan (moderasi) Admin</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="37--modul-pengiriman-integrasi-biteship-api">3.7 — Modul Pengiriman (Integrasi Biteship API)</h3>
+<p>Pengiriman sepenuhnya diotomatisasi oleh <strong>Biteship API</strong> — tidak ada <em>driver</em> internal. Skenario berikut menguji siklus <em>fulfillment</em> lengkap dari pemanggilan kurir hingga paket diterima pelanggan.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHP-01</td>
+<td><em>Create Order</em> &amp; <em>Request Pickup</em> (Biteship)</td>
+<td>1. Status pesanan berubah menjadi <code>Ready</code><br>2. Sistem otomatis memanggil <em>endpoint</em> <code>POST /v1/orders</code> Biteship</td>
+<td>Titik asal (toko),<br>titik tujuan (koordinat/alamat pelanggan),<br>dan layanan kurir yang dipilih</td>
+<td>Biteship API merespons dengan <code>order_id</code> &amp; <code>tracking_id</code>. Status pesanan berubah menjadi <code>Finding Courier</code> / <code>In Transit</code></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>SHP-02</td>
+<td>Cetak Label Pengiriman (Waybill)</td>
+<td>1. Admin/Kasir membuka antarmuka pesanan<br>2. Klik &quot;Cetak Resi Pengiriman&quot;</td>
+<td>—</td>
+<td>Sistem <em>generate</em> label pengiriman resmi (Waybill) berisi <em>barcode/QR tracking</em>, data kurir, dan alamat pelanggan</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>SHP-03</td>
+<td>Pelacakan Pengiriman Terpusat (Tracking)</td>
+<td>1. Pelanggan membuka detail pesanan<br>2. Mengecek bagian <em>Tracking Timeline</em></td>
+<td><code>tracking_id</code> yang tersimpan di <em>database</em></td>
+<td>Sistem memanggil <code>/v1/trackings</code> Biteship untuk menampilkan riwayat status (misal: <em>Courier Assigned</em>, <em>Picked Up</em>) secara <em>real-time</em></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>SHP-04</td>
+<td>Sinkronisasi Status via Webhook Biteship</td>
+<td>1. Kurir menyelesaikan pengiriman<br>2. Sistem Pizzaria menerima <em>Webhook</em> dari Biteship</td>
+<td>Payload JSON berisi <em>event</em> <code>order.status_updated</code> (<code>status: delivered</code>)</td>
+<td>Sistem memvalidasi <em>signature</em> Webhook, lalu memperbarui status pesanan pelanggan menjadi <code>Completed</code></td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="38--modul-analitik--notifikasi-admin">3.8 — Modul Analitik &amp; Notifikasi Admin</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Skenario</th>
+<th>Langkah Pengujian</th>
+<th>Input</th>
+<th>Hasil yang Diharapkan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADM-01</td>
+<td>Notifikasi stok kritis</td>
+<td>1. Login Admin<br>2. Kurangi stok bahan baku hingga di bawah <code>minimum_stock_alert</code></td>
+<td>—</td>
+<td>Notifikasi &quot;Stok Kritis&quot; muncul di panel notifikasi Admin secara <em>real-time</em></td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ADM-02</td>
+<td>Moderasi ulasan buruk</td>
+<td>1. Pelanggan berikan ulasan 1 bintang<br>2. Login Admin<br>3. Buka <code>/admin/reviews</code></td>
+<td>—</td>
+<td>Ulasan dengan rating ≤ 2 bintang muncul di daftar dan Admin bisa Setujui atau Hapus</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ADM-03</td>
+<td>Export laporan ke PDF</td>
+<td>1. Login Admin<br>2. Buka <code>/admin/analytics</code><br>3. Klik Ekspor PDF</td>
+<td>—</td>
+<td>File PDF laporan penjualan terunduh dengan data yang akurat</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ADM-04</td>
+<td>Export laporan ke Excel</td>
+<td>1. Login Admin<br>2. Buka <code>/admin/analytics</code><br>3. Klik Ekspor Excel</td>
+<td>—</td>
+<td>File Excel (.xlsx) laporan penjualan berhasil terunduh</td>
+<td><code>[ ]</code></td>
+</tr>
+<tr>
+<td>ADM-05</td>
+<td>Target penjualan di dashboard</td>
+<td>1. Buka <code>/admin/settings</code><br>2. Set <code>target_daily</code> = 2000000<br>3. Lihat dashboard</td>
+<td>—</td>
+<td>Progress bar target harian di dashboard Admin menggunakan nilai yang baru diset</td>
+<td><code>[ ]</code></td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
