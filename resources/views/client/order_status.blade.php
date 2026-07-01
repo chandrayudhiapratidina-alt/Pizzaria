@@ -269,24 +269,24 @@
             $steps = ['Pesanan', 'Diproses', 'Selesai'];
             
             if ($order->order_status === 'completed') {
-                $currentStep = 4;
-                $isCompleted = true;
-            } elseif (in_array($order->order_status, ['cooking', 'served', 'ready'])) {
-                $currentStep = 2;
-            } else {
-                $currentStep = 1;
-            }
+                    $currentStep = count($steps);
+                    $isCompleted = true;
+                } elseif (in_array($order->order_status, ['cooking', 'served', 'ready'])) {
+                    $currentStep = 2;
+                } else {
+                    $currentStep = 1;
+                }
 
-            // Logic Pembatalan Pesanan
-            $canCancel = false;
-            if (in_array($order->payment_status, ['pending', 'unpaid']) && !in_array($order->order_status, ['completed', 'cancelled'])) {
-                $canCancel = true;
-            }
-        @endphp
+                // Logic Pembatalan Pesanan
+                $canCancel = false;
+                if (in_array($order->payment_status, ['pending', 'unpaid']) && !in_array($order->order_status, ['completed', 'cancelled'])) {
+                    $canCancel = true;
+                }
+            @endphp
         
         <style>
             .stepper-wrapper::after {
-                width: {{ $currentStep <= 1 ? '0%' : (($currentStep - 1) / (count($steps) - 1) * 100) . '%' }};
+                width: {{ $currentStep <= 1 ? '0%' : min((($currentStep - 1) / (count($steps) - 1) * 100), 100) . '%' }};
             }
         </style>
 
