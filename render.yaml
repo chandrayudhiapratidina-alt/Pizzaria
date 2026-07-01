@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: pizzaria-web
+    env: php
+    plan: free
+    buildCommand: "composer install --no-dev --optimize-autoloader && npm install && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force"
+    startCommand: "php artisan serve --host=0.0.0.0 --port=$PORT"
+    envVars:
+      - key: APP_NAME
+        value: Pizzaria
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/data/database.sqlite
+      # Using SQLite for easy free tier deployment. Can be changed to MySQL/Postgres in Render Dashboard.
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: BROADCAST_DRIVER
+        value: log
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: PHP_VERSION
+        value: 8.2
+    disk:
+      name: pizzaria-data
+      mountPath: /var/data
+      sizeGB: 1
