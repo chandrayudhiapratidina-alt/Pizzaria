@@ -17,21 +17,17 @@ services:
       - key: DB_CONNECTION
         value: sqlite
       - key: DB_DATABASE
-        value: /var/data/database.sqlite
-      # Using SQLite for easy free tier deployment. Can be changed to MySQL/Postgres in Render Dashboard.
+        value: database/database.sqlite
+      # Using SQLite for easy free tier deployment. Database data will reset on every deploy because we disabled the paid disk.
       - key: LOG_CHANNEL
         value: stderr
       - key: BROADCAST_DRIVER
         value: log
       - key: CACHE_DRIVER
-        value: file
+        value: array
       - key: SESSION_DRIVER
         value: cookie
       - key: QUEUE_CONNECTION
         value: sync
       - key: PHP_VERSION
         value: 8.2
-    disk:
-      name: pizzaria-data
-      mountPath: /var/data
-      sizeGB: 1
