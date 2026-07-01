@@ -1,0 +1,6 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+# Menjalankan migrasi database sebelum aplikasi go-live
+releaseCommand = "php artisan migrate --force"
