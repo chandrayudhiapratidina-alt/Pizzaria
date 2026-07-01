@@ -4,4 +4,4 @@ buildCommand = "composer install --optimize-autoloader --no-dev && npm install &
 
 [deploy]
 # Menjalankan migrasi database sebelum aplikasi go-live
-releaseCommand = "php artisan migrate --force && php artisan db:seed --force"
+releaseCommand = "php artisan migrate --force"
