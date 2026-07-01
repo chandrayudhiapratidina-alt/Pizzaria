@@ -7,6 +7,14 @@ Route::get('/', function () {
     return redirect()->route('client.guest.catalog');
 });
 
+Route::get('/init-seeder', function () {
+    if (\App\Models\Category::count() === 0) {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return "Database berhasil di-seed! Silakan kembali ke halaman utama.";
+    }
+    return "Database sudah memiliki data, seeding dibatalkan (untuk mencegah duplikasi).";
+});
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
