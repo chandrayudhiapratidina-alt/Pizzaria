@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') - {{ $storeName }}</title>
+    <meta name="author" content="Chandra Yudhia Pratidina">
+    <meta name="developer" content="Chandra Yudhia Pratidina">
+    <meta name="copyright" content="© 2026 Chandra Yudhia Pratidina. All Rights Reserved.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -192,6 +195,13 @@
             @endif
             @yield('content')
         </div>
+    </div>
+
+    <!-- Developer Credit Bar -->
+    <div style="background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; padding: 8px; font-size: 0.72rem; color: #4b5563; font-family: 'Inter', sans-serif; position: fixed; bottom: 0; width: 100%; z-index: 99;">
+        &copy; {{ date('Y') }} {{ $storeName }} &nbsp;|&nbsp; Designed &amp; Developed by
+        <strong style="color: #c00a27;">Chandra Yudhia Pratidina</strong>
+        &nbsp;|&nbsp; Hak Cipta Dilindungi Undang-Undang No. 28 Tahun 2014
     </div>
 
     <script>

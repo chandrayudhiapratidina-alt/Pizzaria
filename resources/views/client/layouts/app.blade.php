@@ -8,7 +8,9 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $storeName }} menyajikan pengalaman makan pizza otentik dengan bahan-bahan premium. Pesan sekarang untuk Delivery atau Dine-in!">
     <meta name="keywords" content="pizza, {{ strtolower($storeName) }}, restoran pizza, pesan pizza online, delivery pizza, pizza premium, makanan italia">
-    <meta name="author" content="{{ $storeName }}">
+    <meta name="author" content="Chandra Yudhia Pratidina">
+    <meta name="developer" content="Chandra Yudhia Pratidina">
+    <meta name="copyright" content="© 2026 Chandra Yudhia Pratidina. All Rights Reserved.">
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="restaurant">
@@ -626,7 +628,13 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 {{ $storeName }}. All rights reserved. <span style="color:var(--gold)">Crafted with passion.</span></p>
+            <p style="margin-bottom: 6px;">&copy; {{ date('Y') }} {{ $storeName }}. All rights reserved. <span style="color:var(--gold)">Crafted with passion.</span></p>
+            <p style="font-size: 0.8rem; color: #555; margin: 0;">
+                Designed &amp; Developed by 
+                <span style="color: var(--primary); font-weight: 600;">Chandra Yudhia Pratidina</span>
+                &nbsp;|&nbsp;
+                <span style="color: #555;">Hak Cipta Dilindungi Undang-Undang No. 28 Tahun 2014 tentang Hak Cipta.</span>
+            </p>
         </div>
     </footer>
     
